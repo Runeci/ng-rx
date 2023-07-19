@@ -1,0 +1,52 @@
+<div class="desk-container">
+  <div class="desk-inputs">
+    <mat-form-field class="desk-form-field">
+      <mat-label>Enter column name</mat-label>
+      <input matInput type="text" [(ngModel)]="columnValue">
+      <div class="btns" matSuffix>
+        <button *ngIf="columnValue" matSuffix mat-icon-button aria-label="Enter task" class="btn" (click)="addColumn()">
+          <mat-icon>done</mat-icon>
+        </button>
+        <button *ngIf="columnValue" matSuffix mat-icon-button aria-label="Enter task" class="btn" (click)="columnValue=''">
+          <mat-icon >close</mat-icon>
+        </button>
+      </div>
+    </mat-form-field>
+  </div>
+
+
+  <div class="drag-n-drop-container">
+    <div cdkDropListGroup>
+      <div class="drag-n-drop-column" *ngFor="let column of columns; let columnIndex = index">
+        <h2>{{ column.name }} {{columnIndex}}</h2>
+
+        <div
+          cdkDropList
+          *ngIf="column.tasks.length"
+          [cdkDropListData]="column.tasks"
+          class="example-list"
+          (cdkDropListDropped)="drop($event, columnIndex)">
+          <div class="example-box" *ngFor="let task of column.tasks; let taskIndex = index" cdkDrag>
+            <p>{{task.name}}</p>
+            <mat-icon class="icon" (click)="deleteTask(taskIndex, columnIndex)">close</mat-icon>
+          </div>
+        </div>
+
+        <mat-form-field class="drag-n-drop-field" appearance="outline">
+          <mat-label>Enter column name</mat-label>
+          <input matInput type="text" #input>
+          <div class="btns" matSuffix>
+            <button *ngIf="input.value" matSuffix mat-icon-button aria-label="Enter task" class="btn" (click)="addTask({ name: input.value }, columnIndex)">
+              <mat-icon>done</mat-icon>
+            </button>
+            <button *ngIf="input.value" matSuffix mat-icon-button aria-label="Enter task" class="btn" (click)="input.value=''">
+              <mat-icon >close</mat-icon>
+            </button>
+          </div>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>
+
+

@@ -1,7 +1,22 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { AppComponent } from './app/app.component';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideStore } from '@ngrx/store';
+import { importProvidersFrom } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { reducers } from './ngrx/state';
+import { provideRouter, Routes } from '@angular/router';
+import { metaReducers } from './ngrx/reducers';
 
-import { AppModule } from './app/app.module';
+const routes: Routes = [];
 
-
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideAnimations(),
+    provideRouter(routes),
+    provideStore(reducers, { metaReducers}),
+    provideStoreDevtools(),
+    importProvidersFrom(HttpClientModule),
+  ],
+}).catch(console.error);
